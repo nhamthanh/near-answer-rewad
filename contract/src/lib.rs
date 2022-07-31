@@ -13,7 +13,8 @@ use near_sdk::{env, near_bindgen, AccountId, Promise};
 
 // Define the default message
 const DEFAULT_MESSAGE: &str = "Hello";
-const AMOUNT_VAR: u128 = 350_000_000;
+// 1 Ⓝ in yoctoNEAR
+const PRIZE_AMOUNT: u128 = 1_000_000_000_000_000_000_000_000;
 
 // Define the contract structure
 #[near_bindgen]
@@ -42,6 +43,7 @@ impl Default for Blog{
 pub struct Post {
     pub title: String,
     pub body: String,
+    pub right: String,
     pub author: AccountId,
     pub reply: Vec<Reply>,
     pub open: bool,
@@ -53,6 +55,7 @@ pub struct Post {
 pub struct Reply {
     pub body: String,
     pub author: AccountId,
+    pub right: bool,
 }
 
 // Implement the contract structure
@@ -74,7 +77,7 @@ impl Blog {
         self.records.insert( &account_id, &message);
     }
 
-    pub fn create_post(&mut self, title: String, body: String) -> usize {
+    pub fn create_post(&mut self, title: String, body: String, right: String) -> usize {
         let author = env::signer_account_id();
         let post = Post {
             title,
@@ -83,8 +86,8 @@ impl Blog {
             reply: Vec::new(),
             open: true,
             id: self.posts.len() as usize,
+            right: right,
         };
-        //self.pay_answer(author.clone());
         self.posts.insert(&post.id, &post);
         post.id
     }
@@ -98,7 +101,9 @@ impl Blog {
 
     // get post
     pub fn get_post(&self, id: usize) -> Post {
-        self.posts.get(&id).unwrap().clone()
+        let mut post = self.posts.get(&id).unwrap().clone();
+        post.right = "".to_string();
+        post
     }
 
     // get posts
@@ -107,28 +112,43 @@ impl Blog {
     }
 
     // answer question
-    pub fn answer(&self, post_id: usize, answer: String, answer_id: AccountId) -> Post {
+    #[payable]
+    pub fn answer(&mut self, post_id: usize, answer: String) -> Post {
+        let answer_id = env::predecessor_account_id();
+        //assert_eq!(true, false, "{}", format!("'{}' - '{}'", env::signer_account_id().to_string(), env::predecessor_account_id().to_string()));
         let mut post = self.posts.get(&post_id).unwrap();
+        assert_ne!(post.author, answer_id, "only customer can answer question");
+        assert_eq!(post.open, true, "This question is closed");
+        let right = post.right.eq(&answer);
         let reply = Reply {
             body: answer,
-            author: answer_id,
+            author: answer_id.clone(),
+            right: right
         };
+        
+        // closed question
+        post.open = !right;
+        if right {
+            self.pay_answer(answer_id);
+        }
+        
         post.reply.push(reply);
-        self.posts.get(&post_id).unwrap().clone()
+        self.posts.insert(&post_id, &post);
+        post.clone()
     }
 
     // answer question
-    pub fn question_close(&self, post_id: usize, answer_id: AccountId) -> Post {
-        let user = env::signer_account_id();
-        assert_eq!(self.owner, user, "only owner can close post");
-        let mut post = self.posts.get(&post_id).unwrap();
-        post.open = false;
-        self.pay_answer(answer_id);
-        self.posts.get(&post_id).unwrap().clone()
-    }
+    // pub fn question_close(&self, post_id: usize, answer_id: AccountId) -> Post {
+    //     let user = env::signer_account_id();
+    //     assert_eq!(self.owner, user, "only owner can close post");
+    //     let mut post = self.posts.get(&post_id).unwrap();
+    //     post.open = false;
+    //     self.pay_answer(answer_id);
+    //     self.posts.get(&post_id).unwrap().clone()
+    // }
 
     fn pay_answer(&self, to: AccountId) -> Promise {
-        Promise::new(to).transfer(AMOUNT_VAR)
+        Promise::new(to).transfer(PRIZE_AMOUNT)
     }
 }
 
@@ -146,30 +166,23 @@ mod tests {
 
     // Mock the context for testing
     fn get_context(input: Vec<u8>, is_view: bool) -> VMContext {
-        // VMContext {
-        //     current_account_id: "join_near".parse().unwrap(),
-        //     signer_account_id: "bob_near".parse().unwrap(),
-        //     signer_account_pk: vec![0,1,2],
-        //     random_seed: vec![0,1,2],
-        //     account_balance: 0,
-        //     attached_deposit: 0,
-        //     block_index: 0,
-        //     storage_usage: 0,
-        //     block_timestamp: 0,
-        //     account_locked_balance: 0,
-        //     epoch_height: 19,
-        //     output_data_receivers: vec![],
-        //     input,
-        //     prepaid_gas: Gas(10u64.pow(18)),
-        //     view_config: None,
-        //     predecessor_account_id: "carol_near".parse().unwrap(),
-        // }
         VMContextBuilder::new()
             .signer_account_id("bob_near".parse().unwrap())
             .current_account_id("join_near".parse().unwrap())
-            .account_balance(900_000_000)
+            .account_balance(5_000_000_000_000_000_000_000_000)
             .is_view(is_view)
             .build()
+    }
+
+    #[test]
+    fn test_answer_2() {
+        let mut context = get_context(vec![],false);
+        testing_env!(context);
+        let mut contract = Blog::default();
+        let post_id = contract.create_post("title".to_string(), "1+1=".to_string(), "2".to_string());
+        contract.answer(post_id, "2".to_string());
+        let post = contract.get_post(0);
+        assert_eq!(post.reply.get(0).unwrap().body, "2".to_string());
     }
 
     #[test]
@@ -201,16 +214,16 @@ mod tests {
         let context = get_context(vec![],false);
         testing_env!(context);
         let mut contract = Blog::default();
-        let post_id = contract.create_post("title".to_string(), "body".to_string());
+        let post_id = contract.create_post("title".to_string(), "body".to_string(), "right-answer".to_string());
         assert_eq!(post_id, 0);
 
         // create another post
-        let post_id = contract.create_post("another title".to_string(), "another body".to_string());
+        let post_id = contract.create_post("another title".to_string(), "another body".to_string(), "right-answer".to_string());
         assert_eq!(post_id, 1);
 
         // 20 posts from 2 (we created 2)
         for i in 2..20 {
-            let post_id = contract.create_post("title".to_string(), "body".to_string());
+            let post_id = contract.create_post("title".to_string(), "body".to_string(), "right-answer".to_string());
             assert_eq!(post_id, i);
         }
     }
@@ -230,29 +243,30 @@ mod tests {
         );
     }
 
-    // #[test]
-    // fn test_send_two_times() {
-    //     let mut contract = LinkDrop::default();
-    //     let pk: Base58PublicKey = "qSq3LoufLvTCTNGC3LJePMDGrok8dHMQ5A1YD9psbiz"
-    //         .try_into()
-    //         .unwrap();
-    //     // Deposit money to linkdrop contract.
-    //     let deposit = ACCESS_KEY_ALLOWANCE * 100;
-    //     testing_env!(VMContextBuilder::new()
-    //         .current_account_id(linkdrop())
-    //         .attached_deposit(deposit)
-    //         .finish());
-    //     contract.send(pk.clone());
-    //     assert_eq!(contract.get_key_balance(pk.clone()), (deposit - ACCESS_KEY_ALLOWANCE).into());
-    //     testing_env!(VMContextBuilder::new()
-    //         .current_account_id(linkdrop())
-    //         .account_balance(deposit)
-    //         .attached_deposit(deposit + 1)
-    //         .finish());
-    //     contract.send(pk.clone());
-    //     assert_eq!(
-    //         contract.accounts.get(&pk.into()).unwrap(),
-    //         deposit + deposit + 1 - 2 * ACCESS_KEY_ALLOWANCE
-    //     );
-    // }
+    #[test]
+    fn test_answer() {
+        let mut context = get_context(vec![],false);
+        testing_env!(context);
+        let mut contract = Blog::default();
+        let post_id = contract.create_post("title".to_string(), "1+1=".to_string(), "right-answer".to_string());
+        let post = contract.answer(post_id, "2".to_string());
+        assert_eq!(post.reply.get(0).unwrap().body, "2".to_string());
+    }
+
+   
+    #[test]
+    fn test_get_posts() {
+        let context = get_context(vec![],false);
+        testing_env!(context);
+        let mut contract = Blog::default();
+        let post_id = contract.create_post("title".to_string(), "body".to_string(), "right-answer".to_string());
+        assert_eq!(post_id, 0);
+
+        // create another post
+        let post_id = contract.create_post("another title".to_string(), "another body".to_string(), "right-answer".to_string());
+        assert_eq!(post_id, 1);
+
+        let posts = contract.get_posts();
+        assert_eq!(posts.len(), 2);
+    }
 }

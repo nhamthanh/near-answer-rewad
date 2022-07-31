@@ -18,9 +18,9 @@ export async function initContract() {
   // Initializing our contract APIs by contract name and configuration
   window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['get_greeting', 'get_post'],
+    viewMethods: ['get_greeting', 'get_post', 'get_posts'],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: ['set_greeting', 'create_post', 'delete_post'],
+    changeMethods: ['set_greeting', 'create_post', 'delete_post', 'answer'],
   })
 }
 
@@ -48,4 +48,40 @@ export async function set_greeting(message){
 export async function get_greeting(){
   let greeting = await window.contract.get_greeting()
   return greeting
+}
+
+export async function get_posts(){
+  let posts = await window.contract.get_posts()
+  return posts
+}
+
+export async function delete_post(id){
+  await window.contract.delete_post({
+    id: id
+  })
+  return true
+}
+
+export async function get_post(id){
+  let post = await window.contract.get_post({
+    id: id
+  })
+  return post
+}
+
+export async function create_post(post_req){
+  let post = await window.contract.create_post({
+    title: post_req.title,
+    body: post_req.body,
+    right: post_req.right
+  })
+  return post
+}
+
+export async function update_answer(answer_req){
+  let post = await window.contract.answer({
+    post_id: answer_req.id,
+    answer: answer_req.answer,
+  })
+  return post
 }
