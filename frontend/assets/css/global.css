@@ -155,6 +155,9 @@
     transform: translateY(10em);
     right: 0;
   }
+  h4 {
+    color: white;
+  }
   aside footer {
     display: flex;
     font-size: 0.9em;

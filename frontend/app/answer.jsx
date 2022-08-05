@@ -1,16 +1,24 @@
-import {get_post, update_answer} from '../assets/js/near/utils'
+import {get_question, update_answer} from '../assets/js/near/utils'
 import React from 'react'
 import { useParams} from 'react-router-dom'
-
+import Notification from './notification'
+import sha256 from 'js-sha256';
 
 export default function Answer () {
   const [title, setTitle] = React.useState()
   const [question, setQuestion] = React.useState()
   const [answer, setAnswer] = React.useState()
+  // when the user submit, disable the button to avoid double click
+  const [buttonDisabled, setButtonDisabled] = React.useState(false)
+  const [result, setResult] = React.useState('')
+  // after submitting the form, we want to show Notification
+  const [showNotification, setShowNotification] = React.useState(false)
   let { id } = useParams();
   React.useEffect(
     () => {
-      get_post(parseInt(id))
+      document.getElementById('addHyperLink').className = "";
+      document.getElementById('homeHyperlink').className = "active";
+      get_question(parseInt(id))
         .then(question => {
           setTitle(question.title)
           setQuestion(question.body)
@@ -28,19 +36,26 @@ export default function Answer () {
 
   const answerQuestion=(event)=>{
     event.preventDefault()
+    setButtonDisabled(true)
+
     update_answer({
       id: parseInt(id),
-      answer: event.target.answer.value,
+      answer: sha256.sha256(event.target.answer.value),
     }).then(function (response) {
-      window.location.assign('/');
+      setShowNotification(true)
+      response.open ? setResult('Sorry, your answer is incorrect') :  setResult('Your answer is correct and get rewarded') 
+      setTimeout(() => {
+        window.location.assign('/');
+      }, 1000)
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error)
     });
     
   }
 
   return (
+      <>
       <div class="form-group">
         <div class="form-area">  
             <form role="form" onSubmit={answerQuestion} >
@@ -54,14 +69,14 @@ export default function Answer () {
               </div>
 
               <div className="form-group">
-                <textarea className="form-control" type="textarea" id="answer" name="answer" placeholder="Answer" maxlength="140" rows="7"></textarea>
+                <textarea className="form-control" required type="textarea" id="answer" name="answer" placeholder="Answer" maxlength="140" rows="7"></textarea>
               </div>
                 
-              <button type="submit" id="submit" name="submit" className="btn btn-primary pull-right">Submit</button>
+              <button type="submit" disabled={buttonDisabled} id="submit" name="submit" className="btn btn-primary pull-right">Submit</button>
             </form>
         </div>
       </div>
+      {showNotification && <Notification mesage={result}/>}
+      </>
     )
   }
-
-  

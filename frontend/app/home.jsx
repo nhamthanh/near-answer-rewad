@@ -1,22 +1,25 @@
-import {get_posts, delete_post} from '../assets/js/near/utils'
+import {get_owner, get_questions, delete_question} from '../assets/js/near/utils'
 import React from 'react'
-class ShowPost extends React.Component {
+class ShowQuestions extends React.Component {
 
     constructor(props) {
       super(props);
       this.answer = this.answer.bind(this);
       this.delete = this.delete.bind(this);
       this.state = {
-        posts:[]
+        questions:[],
+        owner: ''
       };
     }
     componentDidMount(){
       document.getElementById('addHyperLink').className = "";
       document.getElementById('homeHyperlink').className = "active";
       var self = this;
-      get_posts().then(function (response) {
-        console.log(response);
-        self.setState({posts:response});
+      get_owner().then(function (response) {
+        self.setState({owner:response});
+      })
+      get_questions().then(function (response) {
+        self.setState({questions:response});
       })
     }
 
@@ -25,15 +28,17 @@ class ShowPost extends React.Component {
     }
 
     delete(id) {
-      delete_post(post.id);
-      window.location.reload();
+      if(window.confirm('Delete the item?')) {
+        delete_question(id);
+        window.location.reload();
+      }
     }
     
     render() {
-      const { posts } = this.state;
+      const { questions } = this.state;
       return ( 
         <div > 
-          { posts.length > 0 ?
+          { questions.length > 0 ?
               <table class="table">
               <thead><tr>
                 <th scope="col">Title</th>
@@ -46,19 +51,20 @@ class ShowPost extends React.Component {
               </thead>
               <tbody>
               {
-                posts.map((post, index) => {
+                questions.map((question, index) => {
                   return <><tr key={index}>
-                        <td>{post.title}</td>
-                        <td>{post.body}</td>
+                        <td>{question.title}</td>
+                        <td>{question.body}</td>
                         <td></td>
-                        <td>{post.author}</td>
-                        <td>{ post.open & post.author !== window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.answer(post.id)}>Reply</button> : ''}</td>
-                        <td>{ post.author == window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.delete(post.id)}>Delete</button> : ''}</td>
+                        <td>{question.author}</td>
+                        <td>{ question.open & question.author !== window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.answer(question.id)}>Answer</button> : ''}</td>
+                        <td>{ this.state.owner === window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.delete(question.id)}>Delete</button> : '' }</td>
                     </tr>
-                    { post.reply.map((reply, index) => {
+                    { question.reply.map((reply, index) => {
                       return <tr><td> - </td><td></td><td>{reply.body}</td>
                         <td>{reply.author}</td>
-                        <td>{reply.right ? 'Right' : ''}</td>
+                        <td>{reply.correct ? 'Correct' : 'Incorrect'}</td>
+                        <td></td>
                       </tr> 
                     })
                     }
@@ -72,4 +78,4 @@ class ShowPost extends React.Component {
     }
 }
 
-export default ShowPost;
+export default ShowQuestions;

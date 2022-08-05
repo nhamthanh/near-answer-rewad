@@ -18,9 +18,9 @@ export async function initContract() {
   // Initializing our contract APIs by contract name and configuration
   window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['get_greeting', 'get_post', 'get_posts'],
+    viewMethods: ['get_question', 'get_questions', 'get_owner'],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: ['set_greeting', 'create_post', 'delete_post', 'answer'],
+    changeMethods: ['create_question', 'delete_question', 'answer'],
   })
 }
 
@@ -38,42 +38,34 @@ export function login() {
   window.walletConnection.requestSignIn(nearConfig.contractName)
 }
 
-export async function set_greeting(message){
-  let response = await window.contract.set_greeting({
-    args:{message: message}
-  })
-  return response
+export async function get_questions(){
+  let questions = await window.contract.get_questions()
+  return questions
 }
 
-export async function get_greeting(){
-  let greeting = await window.contract.get_greeting()
-  return greeting
-}
-
-export async function get_posts(){
-  let posts = await window.contract.get_posts()
-  return posts
-}
-
-export async function delete_post(id){
-  await window.contract.delete_post({
+export async function delete_question(id){
+  await window.contract.delete_question({
     id: id
   })
   return true
 }
 
-export async function get_post(id){
-  let post = await window.contract.get_post({
+export async function get_question(id){
+  let question = await window.contract.get_question({
     id: id
   })
-  return post
+  return question
 }
 
-export async function create_post(post_req){
-  let post = await window.contract.create_post({
-    title: post_req.title,
-    body: post_req.body,
-    right: post_req.right
+export async function get_owner(){
+  return await window.contract.get_owner()
+}
+
+export async function create_question(question_req){
+  let post = await window.contract.create_question({
+    title: question_req.title,
+    body: question_req.body,
+    solution: question_req.solution
   })
   return post
 }
