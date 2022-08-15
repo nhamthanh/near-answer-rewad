@@ -16,6 +16,9 @@ export default function Answer () {
   let { id } = useParams();
   React.useEffect(
     () => {
+      // if(location.search) {
+      //   window.location.assign('/');
+      // }
       document.getElementById('addHyperLink').className = "";
       document.getElementById('homeHyperlink').className = "active";
       get_question(parseInt(id))
@@ -49,7 +52,8 @@ export default function Answer () {
       }, 1000)
     })
     .catch(function (error) {
-      console.log(error)
+      alert(error.kind.ExecutionError)
+      setButtonDisabled(false)
     });
     
   }
@@ -59,6 +63,7 @@ export default function Answer () {
       <div class="form-group">
         <div class="form-area">  
             <form role="form" onSubmit={answerQuestion} >
+              <div> * Every question cost you 0.4 Near </div>
               <br styles="clear:both" />
               <div className="form-group">
                 <input readOnly type="text" value={title} className="form-control" id="title" name="title" placeholder="Title" required />

@@ -9,10 +9,13 @@
 use near_sdk::collections::{LookupMap, UnorderedMap};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::serde::{Deserialize, Serialize};
-use near_sdk::{env, near_bindgen, AccountId, Promise};
+use near_sdk::{env, near_bindgen, Balance, AccountId, Promise, json_types::{ U128 },};
 
 // 1 Ⓝ in yoctoNEAR
-const PRIZE_AMOUNT: u128 = 1_000_000_000_000_000_000_000_000;
+const PRIZE_AMOUNT: u128 = 2_000_000_000_000_000_000_000_000;
+
+// 0.5 Ⓝ in yoctoNEAR
+const FEE_ANSWER: u128 =     400_000_000_000_000_000_000_000;
 
 // Define the contract structure
 #[near_bindgen]
@@ -22,6 +25,7 @@ pub struct Blog {
     answers: LookupMap<usize,String>,
     questions: UnorderedMap<usize, Question>,
     owner: AccountId,
+    pub credits: UnorderedMap<AccountId, Balance>,
 }
 
 // Define the default, which automatically initializes the contract
@@ -30,9 +34,9 @@ impl Default for Blog{
         Self{id: 0,
             answers: LookupMap::new(b"answers".to_vec()),
             questions: UnorderedMap::new(b"questions".to_vec()),
+            credits: UnorderedMap::new(b"credits".to_vec()),    
             owner: env::signer_account_id(),
         }
-        
     }
 }
 
@@ -61,19 +65,44 @@ impl Blog {
 
     pub fn create_question(&mut self, title: String, body: String, solution: String) -> usize {
         let author = env::signer_account_id();
+        let mut credits = self.credits.get(&author).unwrap_or(0);
+        assert!(credits > FEE_ANSWER, "not enough credits to answer");
         let question = Question {
             title,
             body,
-            author: author,
+            author: author.clone(),
             reply: Vec::new(),
             open: true,
             id: self.id,
         };
+        credits = credits - FEE_ANSWER;
+        self.credits.insert(&author, &credits);
         self.answers.insert(&self.id, &solution);
         self.questions.insert(&question.id, &question);
         self.id += 1;
         question.id
     }
+
+    #[payable]
+    pub fn deposit(&mut self) {
+        let account_id = env::signer_account_id();
+        let deposit = env::attached_deposit();
+        assert!(deposit > FEE_ANSWER, "Please deposit at least 0.4 Near ");
+        let mut credits = self.credits.get(&account_id).unwrap_or(0);
+        credits = credits + deposit;
+        self.credits.insert(&account_id, &credits);
+    }
+
+    pub fn get_credit(&self, account: AccountId) -> U128 {
+        self.credits.get(&account).unwrap_or(0).into()
+    }
+
+    // pub fn minus_credit(&mut self, account: AccountId) -> U128 {
+    //     let mut credits = self.credits.get(&account).unwrap_or(0);
+    //     credits = credits - FEE_ANSWER;
+    //     self.credits.insert(&account, &credits);
+    //     credits.into()
+    // }
 
     // delete post
     pub fn delete_question(&mut self, id: usize) {
@@ -99,11 +128,13 @@ impl Blog {
     }
 
     // answer question
-    #[payable]
     pub fn answer(&mut self, post_id: usize, answer: String) -> Question {
-        let answer_id = env::predecessor_account_id();
-        //assert_eq!(true, false, "{}", format!("'{}' - '{}'", env::signer_account_id().to_string(), env::predecessor_account_id().to_string()));
-        let mut post = self.questions.get(&post_id).unwrap();
+        let answer_id = env::signer_account_id();
+        let mut post = self.questions.get(&post_id).expect(&"this post is not exist".to_string());
+
+        let mut credits = self.credits.get(&answer_id).unwrap_or(0);
+        assert!(credits > FEE_ANSWER, "not enough credits to answer");
+
         assert_ne!(post.author, answer_id, "only customer can answer question");
         assert_eq!(post.open, true, "This question is closed");
         let solution = self.answers.get(&post_id);
@@ -113,14 +144,17 @@ impl Blog {
             author: answer_id.clone(),
             correct: correct
         };
-        
+
         // closed question
         post.open = !correct;
         if correct {
-            self.pay_answer(answer_id);
+            self.pay_answer(answer_id.clone());
         }
         
         post.reply.push(reply);
+
+        credits = credits - FEE_ANSWER;
+        self.credits.insert(&answer_id, &credits);
         self.questions.insert(&post_id, &post);
         post.clone()
     }
@@ -138,16 +172,18 @@ impl Blog {
 mod tests {
     use near_sdk::test_utils::VMContextBuilder;
     use super::*;
-    use near_sdk::MockedBlockchain;
-    use std::convert::TryInto;
+    // use near_sdk::MockedBlockchain;
+    // use std::convert::TryInto;
     use near_sdk::{testing_env, VMContext};
 
     // Mock the context for testing
     fn get_context(input: Vec<u8>, is_view: bool) -> VMContext {
         VMContextBuilder::new()
             .signer_account_id("bob_near".parse().unwrap())
+            .predecessor_account_id("bob_near".parse().unwrap())
             .current_account_id("join_near".parse().unwrap())
             .account_balance(5_000_000_000_000_000_000_000_000)
+            .attached_deposit(1_000_000_000_000_000_000_000_000)
             .is_view(is_view)
             .build()
     }
@@ -162,6 +198,18 @@ mod tests {
         let post = contract.get_question(0);
         assert_eq!(post.reply.get(0).unwrap().body, "2".to_string());
         assert_eq!(post.reply.get(0).unwrap().correct, true);
+    }
+
+    #[test]
+    fn test_deposit() {
+        let mut context = get_context(vec![],false);
+        testing_env!(context);
+        let mut contract = Blog::default();
+        let deposit = env::attached_deposit();
+        contract.deposit();
+        assert_eq!(deposit, 2 * FEE_ANSWER, "Wrong deposit ");
+        let credit = contract.get_credit("bob_near".parse().unwrap());
+        assert_eq!(credit, 2 * FEE_ANSWER, "Wrong credit ");
     }
 
     #[test]

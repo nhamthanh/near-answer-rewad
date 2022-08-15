@@ -2,7 +2,7 @@
 export default function Notification({mesage}) {
     return (
       <aside>
-        <h4>{mesage}</h4>
+        <h4 >{mesage}</h4>
       </aside>
     )
   }

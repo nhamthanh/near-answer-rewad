@@ -12,7 +12,7 @@
     --shadow: #e6e6e6;
     --success: rgb(90, 206, 132);
     --primary: #FF585D;
-    --secondary: #ccc;
+    --secondary: rgb(90, 206, 132);
   
     background-color: var(--bg);
     color: var(--fg);
@@ -120,11 +120,10 @@
   }
   
   input {
-    background-color: var(--shadow);
-    border: none;
-    border-radius: 5px 0 0 5px;
+    border: thin 1px;
+    border-radius: 5px;
     caret-color: var(--primary);
-    color: inherit;
+    color: black;
     padding: 0.25em 1em;
   }
   input::selection {
@@ -156,7 +155,7 @@
     right: 0;
   }
   h4 {
-    color: white;
+    color: black;
   }
   aside footer {
     display: flex;
