@@ -1,43 +1,57 @@
-import {get_owner, get_questions, delete_question} from '../assets/js/near/utils'
+import {get_owner, get_questions, delete_question, get_credit, deposit, minus_credit} from '../assets/js/near/utils'
 import React from 'react'
-class ShowQuestions extends React.Component {
-
-    constructor(props) {
-      super(props);
-      this.answer = this.answer.bind(this);
-      this.delete = this.delete.bind(this);
-      this.state = {
-        questions:[],
-        owner: ''
-      };
-    }
-    componentDidMount(){
+import Notification from './notification'
+// class ShowQuestions extends React.Component {
+export default function ShowQuestions () {
+    const [amount, setAmount] = React.useState('');
+    const [credit, setCredit] = React.useState('');
+    const [questions, setQuestions] = React.useState([]);
+    const [owner, setOwner] = React.useState('');
+    const [showNotification, setShowNotification] = React.useState(false)
+    const [result, setResult] = React.useState('')
+    React.useEffect(() => {
       document.getElementById('addHyperLink').className = "";
       document.getElementById('homeHyperlink').className = "active";
-      var self = this;
       get_owner().then(function (response) {
-        self.setState({owner:response});
+        setOwner(response);
       })
       get_questions().then(function (response) {
-        self.setState({questions:response});
+        setQuestions(response);
       })
-    }
+      get_credit(window.accountId).then(function (response) {
+        setCredit(response);
+      }).catch(function (error) {
+        console.log(error)
+      });
+    }, []);
 
-    answer(id) {
+    const answer = (id) => {
       window.location.assign('/answer/'+id);
     }
 
-    delete(id) {
+    const handleDeposit = () => {
+      deposit(amount).then(function () {
+        get_credit(window.accountId).then(function (response) {
+          console.log(response)
+          setCredit(response);
+        }).catch(function (error) {
+          console.log(error)
+        });
+      }).catch(function (error) {
+        console.log(error)
+      });
+    };
+
+    const deleteQuestion = (id) => {
       if(window.confirm('Delete the item?')) {
         delete_question(id);
         window.location.reload();
       }
     }
     
-    render() {
-      const { questions } = this.state;
-      return ( 
-        <div > 
+    return(
+
+        <div> 
           { questions.length > 0 ?
               <table class="table">
               <thead><tr>
@@ -57,8 +71,8 @@ class ShowQuestions extends React.Component {
                         <td>{question.body}</td>
                         <td></td>
                         <td>{question.author}</td>
-                        <td>{ question.open & question.author !== window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.answer(question.id)}>Answer</button> : ''}</td>
-                        <td>{ this.state.owner === window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => this.delete(question.id)}>Delete</button> : '' }</td>
+                        <td>{ question.open & question.author !== window.contract.account.accountId ? <button class="btn btn-primary" onClick={() => answer(question.id)}>Answer</button> : ''}</td>
+                        <td>{ owner === window.accountId ? <button class="btn btn-primary" onClick={() => deleteQuestion(question.id)}>Delete</button> : '' }</td>
                     </tr>
                     { question.reply.map((reply, index) => {
                       return <tr><td> - </td><td></td><td>{reply.body}</td>
@@ -72,10 +86,13 @@ class ShowQuestions extends React.Component {
                 })
               }
               </tbody></table>
-              : <h1>Have no post</h1> }
+              : <h1>Have no post</h1> 
+              }
+              <p>Current Credits: { credit ? credit : 0}</p>
+              <input placeholder="Credits (N)" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <br />
+              <button onClick={() => handleDeposit()}>Buy Credits</button>
+              {showNotification && <Notification mesage={result}/>}
           </div>
-      )
-    }
+    )
 }
-
-export default ShowQuestions;

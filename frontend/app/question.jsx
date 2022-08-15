@@ -1,4 +1,5 @@
 import {create_question} from '../assets/js/near/utils'
+import { useLocation} from 'react-router-dom'
 import React from 'react'
 import sha256 from 'js-sha256';
 import Notification from './notification'
@@ -9,9 +10,12 @@ export default function AddQuestion () {
   // when the user submit, disable the button to avoid double click
   const [buttonDisabled, setButtonDisabled] = React.useState(false)
   const [result, setResult] = React.useState('')
-
+  let location = useLocation();
   React.useEffect(
     () => {
+      // if(location.search) {
+      //   window.location.assign('/');
+      // }
       document.getElementById('addHyperLink').className = "active";
       document.getElementById('homeHyperlink').className = "";
     },
@@ -40,7 +44,7 @@ export default function AddQuestion () {
         
       })
       .catch(function (error) {
-        console.log(error);
+        alert(error.kind.ExecutionError)
         setButtonDisabled(false)
       });
       
@@ -51,6 +55,7 @@ export default function AddQuestion () {
       <div class="form-group">
         <div class="form-area">  
             <form role="form" onSubmit={question}>
+              <div> * Every question cost you 0.4 Near </div>
               <br styles="clear:both" />
               <div className="form-group">
                 <input type="text" className="form-control" id="title" name="title" placeholder="Title" required />

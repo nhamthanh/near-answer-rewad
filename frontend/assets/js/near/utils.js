@@ -1,7 +1,15 @@
-import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
+import { connect, Contract, keyStores, WalletConnection, utils } from 'near-api-js'
 import getConfig from './config'
 
 const nearConfig = getConfig(process.env.NODE_ENV || 'development')
+
+// export const {
+// 	utils: {
+// 		format: {
+// 			formatNearAmount, parseNearAmount
+// 		}
+// 	}
+// } = nearAPI;
 
 // Initialize contract & set global variables
 export async function initContract() {
@@ -18,9 +26,9 @@ export async function initContract() {
   // Initializing our contract APIs by contract name and configuration
   window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['get_question', 'get_questions', 'get_owner'],
+    viewMethods: ['get_question', 'get_questions', 'get_owner', 'get_credit'],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: ['create_question', 'delete_question', 'answer'],
+    changeMethods: ['create_question', 'delete_question', 'answer', 'deposit' ,'minus_credit'],
   })
 }
 
@@ -43,6 +51,15 @@ export async function get_questions(){
   return questions
 }
 
+export async function deposit(amount){
+  await window.contract.deposit({}, nearConfig.GAS, utils.format.parseNearAmount(amount))
+}
+
+export async function get_credit(account){
+  let balance = await window.contract.get_credit({account : account})
+  return utils.format.formatNearAmount(balance, 2)
+}
+
 export async function delete_question(id){
   await window.contract.delete_question({
     id: id
@@ -62,6 +79,7 @@ export async function get_owner(){
 }
 
 export async function create_question(question_req){
+  console.log("create_question");
   let post = await window.contract.create_question({
     title: question_req.title,
     body: question_req.body,

@@ -6,7 +6,7 @@
     "build": "npm run build:contract && npm run build:web",
     "build:contract": "cd contract && rustup target add wasm32-unknown-unknown && cargo build --all --target wasm32-unknown-unknown --release && cp ./target/wasm32-unknown-unknown/release/greeter.wasm ../out/main.wasm",
     "build:web": "parcel build frontend/index.html --public-url ./",
-    "deploy": "npm run build:contract && near dev-deploy -f",
+    "deploy": "gh-pages -d dist",
     "start": "npm run deploy && echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel frontend/index.html --open",
     "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
     "test": "npm run build:contract && npm run test:unit && npm run test:integration",
@@ -23,6 +23,7 @@
     "browserify-zlib": "^0.2.0",
     "crypto-browserify": "^3.12.0",
     "env-cmd": "~10.1.0",
+    "gh-pages": "^4.0.0",
     "near-cli": "~3.3.0",
     "nodemon": "~2.0.16",
     "parcel": "^2.6.0",
@@ -58,5 +59,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://github.com/nhamthanh/near-answer-rewad/"
 }
