@@ -1,7 +1,15 @@
-import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
+import { connect, Contract, keyStores, WalletConnection, utils } from 'near-api-js'
 import getConfig from './config'
 
 const nearConfig = getConfig(process.env.NODE_ENV || 'development')
+
+// export const {
+// 	utils: {
+// 		format: {
+// 			formatNearAmount, parseNearAmount
+// 		}
+// 	}
+// } = nearAPI;
 
 // Initialize contract & set global variables
 export async function initContract() {
@@ -18,9 +26,9 @@ export async function initContract() {
   // Initializing our contract APIs by contract name and configuration
   window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: ['get_greeting', 'get_post'],
+    viewMethods: ['get_question', 'get_questions', 'get_owner', 'get_credit'],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    changeMethods: ['set_greeting', 'create_post', 'delete_post'],
+    changeMethods: ['create_question', 'delete_question', 'answer', 'deposit' ,'minus_credit'],
   })
 }
 
@@ -38,14 +46,52 @@ export function login() {
   window.walletConnection.requestSignIn(nearConfig.contractName)
 }
 
-export async function set_greeting(message){
-  let response = await window.contract.set_greeting({
-    args:{message: message}
-  })
-  return response
+export async function get_questions(){
+  let questions = await window.contract.get_questions()
+  return questions
 }
 
-export async function get_greeting(){
-  let greeting = await window.contract.get_greeting()
-  return greeting
+export async function deposit(amount){
+  await window.contract.deposit({}, nearConfig.GAS, utils.format.parseNearAmount(amount))
+}
+
+export async function get_credit(account){
+  let balance = await window.contract.get_credit({account : account})
+  return utils.format.formatNearAmount(balance, 2)
+}
+
+export async function delete_question(id){
+  await window.contract.delete_question({
+    id: id
+  })
+  return true
+}
+
+export async function get_question(id){
+  let question = await window.contract.get_question({
+    id: id
+  })
+  return question
+}
+
+export async function get_owner(){
+  return await window.contract.get_owner()
+}
+
+export async function create_question(question_req){
+  console.log("create_question");
+  let post = await window.contract.create_question({
+    title: question_req.title,
+    body: question_req.body,
+    solution: question_req.solution
+  })
+  return post
+}
+
+export async function update_answer(answer_req){
+  let post = await window.contract.answer({
+    post_id: answer_req.id,
+    answer: answer_req.answer,
+  })
+  return post
 }
