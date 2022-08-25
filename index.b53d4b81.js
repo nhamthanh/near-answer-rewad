@@ -28793,11 +28793,15 @@ var _login = require("./app/login");
 var _loginDefault = parcelHelpers.interopDefault(_login);
 var _utils = require("./assets/js/near/utils");
 var _reactRouterDom = require("react-router-dom");
+var _main = require("./app/Main");
+var _mainDefault = parcelHelpers.interopDefault(_main);
+var _header = require("./app/Header");
+var _headerDefault = parcelHelpers.interopDefault(_header);
 function App() {
     // if not signed in, return early with sign-in prompt
     if (!window.walletConnection.isSignedIn()) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _loginDefault.default), {}, void 0, false, {
         fileName: "frontend/App.js",
-        lineNumber: 12,
+        lineNumber: 14,
         columnNumber: 7
     }, this);
     return(// use React Fragment, <>, to avoid wrapping elements in unnecessary divs
@@ -28808,83 +28812,24 @@ function App() {
                 children: window.accountId
             }, void 0, false, {
                 fileName: "frontend/App.js",
-                lineNumber: 19,
+                lineNumber: 21,
                 columnNumber: 17
             }, this),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("nav", {
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
-                    class: "nav nav-pills pull-right",
-                    children: [
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                            role: "presentation",
-                            id: "homeHyperlink",
-                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("a", {
-                                href: "/",
-                                children: "Home"
-                            }, void 0, false, {
-                                fileName: "frontend/App.js",
-                                lineNumber: 22,
-                                columnNumber: 56
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "frontend/App.js",
-                            lineNumber: 22,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                            role: "presentation",
-                            id: "addHyperLink",
-                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("a", {
-                                href: "/question",
-                                children: "Add"
-                            }, void 0, false, {
-                                fileName: "frontend/App.js",
-                                lineNumber: 23,
-                                columnNumber: 55
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "frontend/App.js",
-                            lineNumber: 23,
-                            columnNumber: 13
-                        }, this),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
-                            role: "presentation",
-                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                                type: "button",
-                                class: "btn",
-                                onClick: (0, _utils.logout),
-                                children: "Sign out"
-                            }, void 0, false, {
-                                fileName: "frontend/App.js",
-                                lineNumber: 24,
-                                columnNumber: 37
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "frontend/App.js",
-                            lineNumber: 24,
-                            columnNumber: 13
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "frontend/App.js",
-                    lineNumber: 21,
-                    columnNumber: 11
-                }, this)
-            }, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _headerDefault.default), {}, void 0, false, {
                 fileName: "frontend/App.js",
-                lineNumber: 20,
+                lineNumber: 31,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
                 className: "content",
-                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Outlet), {}, void 0, false, {
+                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _mainDefault.default), {}, void 0, false, {
                     fileName: "frontend/App.js",
-                    lineNumber: 30,
+                    lineNumber: 33,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "frontend/App.js",
-                lineNumber: 29,
+                lineNumber: 32,
                 columnNumber: 9
             }, this)
         ]
@@ -28900,7 +28845,7 @@ $RefreshReg$(_c, "App");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","regenerator-runtime/runtime":"dXNgZ","react":"21dqq","./app/login":"4zc2j","./assets/js/near/utils":"8ftwS","react-router-dom":"fdOAw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"dXNgZ":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","regenerator-runtime/runtime":"dXNgZ","react":"21dqq","./app/login":"4zc2j","./assets/js/near/utils":"8ftwS","react-router-dom":"fdOAw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","./app/Main":"6SEpP","./app/Header":"9HLC7"}],"dXNgZ":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -43215,7 +43160,80 @@ function registerExportsForReactRefresh(module) {
     }
 }
 
-},{"react-refresh/runtime":"786KC"}],"7ANZi":[function(require,module,exports) {
+},{"react-refresh/runtime":"786KC"}],"6SEpP":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$9d82 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$9d82.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+var _reactRouterDom = require("react-router-dom");
+var _question = require("./question");
+var _questionDefault = parcelHelpers.interopDefault(_question);
+var _home = require("./home");
+var _homeDefault = parcelHelpers.interopDefault(_home);
+var _answer = require("./answer");
+var _answerDefault = parcelHelpers.interopDefault(_answer);
+// The Main component renders one of the three provided
+// Routes (provided that one matches). Both the /roster
+// and /schedule routes will match any pathname that starts
+// with /roster or /schedule. The / route will only match
+// when the pathname is exactly the string "/"
+const Main = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("main", {
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Switch), {
+            children: [
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
+                    exact: true,
+                    path: "/",
+                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _homeDefault.default), {}, void 0, false, void 0, void 0)
+                }, void 0, false, {
+                    fileName: "frontend/app/Main.jsx",
+                    lineNumber: 17,
+                    columnNumber: 7
+                }, undefined),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
+                    path: "/question",
+                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _questionDefault.default), {}, void 0, false, void 0, void 0)
+                }, void 0, false, {
+                    fileName: "frontend/app/Main.jsx",
+                    lineNumber: 18,
+                    columnNumber: 7
+                }, undefined),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
+                    path: "/answer/:id",
+                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _answerDefault.default), {}, void 0, false, void 0, void 0)
+                }, void 0, false, {
+                    fileName: "frontend/app/Main.jsx",
+                    lineNumber: 19,
+                    columnNumber: 6
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "frontend/app/Main.jsx",
+            lineNumber: 13,
+            columnNumber: 5
+        }, undefined)
+    }, void 0, false, {
+        fileName: "frontend/app/Main.jsx",
+        lineNumber: 12,
+        columnNumber: 3
+    }, undefined);
+_c = Main;
+exports.default = Main;
+var _c;
+$RefreshReg$(_c, "Main");
+
+  $parcel$ReactRefreshHelpers$9d82.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-router-dom":"fdOAw","./question":"7ANZi","./home":"fX4Y9","./answer":"5tHBe","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"7ANZi":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$34a7 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -43976,6 +43994,102 @@ $RefreshReg$(_c, "Answer");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","../assets/js/near/utils":"8ftwS","react":"21dqq","react-router-dom":"fdOAw","./notification":"1WWYc","js-sha256":"ahVaM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}]},["1xC6H","dYoes","7t4RR"], "7t4RR", "parcelRequire5040")
+},{"react/jsx-dev-runtime":"iTorj","../assets/js/near/utils":"8ftwS","react":"21dqq","react-router-dom":"fdOAw","./notification":"1WWYc","js-sha256":"ahVaM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru"}],"9HLC7":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$f1f2 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$f1f2.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+var _reactRouterDom = require("react-router-dom");
+var _utils = require("../assets/js/near/utils");
+// The Header creates links that can be used to navigate
+// between routes.
+const Header = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("header", {
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("nav", {
+            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("ul", {
+                class: "nav nav-pills pull-right",
+                children: [
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                        role: "presentation",
+                        id: "homeHyperlink",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Link), {
+                            href: "/",
+                            children: "Home"
+                        }, void 0, false, {
+                            fileName: "frontend/app/Header.jsx",
+                            lineNumber: 10,
+                            columnNumber: 52
+                        }, undefined)
+                    }, void 0, false, {
+                        fileName: "frontend/app/Header.jsx",
+                        lineNumber: 10,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                        role: "presentation",
+                        id: "addHyperLink",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Link), {
+                            href: "/question",
+                            children: "Add"
+                        }, void 0, false, {
+                            fileName: "frontend/app/Header.jsx",
+                            lineNumber: 11,
+                            columnNumber: 51
+                        }, undefined)
+                    }, void 0, false, {
+                        fileName: "frontend/app/Header.jsx",
+                        lineNumber: 11,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("li", {
+                        role: "presentation",
+                        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            type: "button",
+                            class: "btn",
+                            onClick: (0, _utils.logout),
+                            children: "Sign out"
+                        }, void 0, false, {
+                            fileName: "frontend/app/Header.jsx",
+                            lineNumber: 12,
+                            columnNumber: 33
+                        }, undefined)
+                    }, void 0, false, {
+                        fileName: "frontend/app/Header.jsx",
+                        lineNumber: 12,
+                        columnNumber: 9
+                    }, undefined)
+                ]
+            }, void 0, true, {
+                fileName: "frontend/app/Header.jsx",
+                lineNumber: 9,
+                columnNumber: 7
+            }, undefined)
+        }, void 0, false, {
+            fileName: "frontend/app/Header.jsx",
+            lineNumber: 8,
+            columnNumber: 5
+        }, undefined)
+    }, void 0, false, {
+        fileName: "frontend/app/Header.jsx",
+        lineNumber: 7,
+        columnNumber: 3
+    }, undefined);
+_c = Header;
+exports.default = Header;
+var _c;
+$RefreshReg$(_c, "Header");
+
+  $parcel$ReactRefreshHelpers$f1f2.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","react":"21dqq","react-router-dom":"fdOAw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"km3Ru","../assets/js/near/utils":"8ftwS"}]},["1xC6H","dYoes","7t4RR"], "7t4RR", "parcelRequire5040")
 
 //# sourceMappingURL=index.b53d4b81.js.map
