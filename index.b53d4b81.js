@@ -43178,6 +43178,7 @@ var _answerDefault = parcelHelpers.interopDefault(_answer);
 // with /roster or /schedule. The / route will only match
 // when the pathname is exactly the string "/"
 const Main = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("main", {
+        className: "content",
         children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Routes), {
             children: [
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
