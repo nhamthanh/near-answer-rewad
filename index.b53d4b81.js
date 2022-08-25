@@ -32464,8 +32464,8 @@ Object.defineProperty(exports, "BinaryReader", {
 
 },{"borsh":"4JCmN"}],"4JCmN":[function(require,module,exports) {
 "use strict";
-var Buffer = require("buffer").Buffer;
 var global = arguments[3];
+var Buffer = require("buffer").Buffer;
 var __createBinding = this && this.__createBinding || (Object.create ? function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, {
@@ -43033,7 +43033,7 @@ module.exports = function() {
 };
 
 },{"u3":"dIyaj","./prepareStackTrace":"85RZD"}],"bZD2N":[function(require,module,exports) {
-const CONTRACT_NAME = "dev-1661398974273-31509228817943";
+const CONTRACT_NAME = "dev-1661411188889-97031455865466";
 function getConfig(env) {
     switch(env){
         case "production":
@@ -43502,8 +43502,14 @@ function ShowQuestions() {
     };
     const deleteQuestion = (id)=>{
         if (window.confirm("Delete the item?")) {
-            (0, _utils.delete_question)(id);
-            window.location.reload();
+            console.log("id : " + id);
+            (0, _utils.delete_question)(id).then(function(response) {
+                console.log(response);
+                window.location.reload();
+            }).catch(function(error) {
+                console.log(error.kind.ExecutionError);
+                alert();
+            });
         }
     };
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -43519,7 +43525,7 @@ function ShowQuestions() {
                                     children: "Title"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 58,
+                                    lineNumber: 65,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
@@ -43527,7 +43533,7 @@ function ShowQuestions() {
                                     children: "Quesion"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 59,
+                                    lineNumber: 66,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
@@ -43535,7 +43541,7 @@ function ShowQuestions() {
                                     children: "Answer"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 60,
+                                    lineNumber: 67,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
@@ -43543,7 +43549,7 @@ function ShowQuestions() {
                                     children: "Author"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 61,
+                                    lineNumber: 68,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
@@ -43551,7 +43557,7 @@ function ShowQuestions() {
                                     children: "Result"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 62,
+                                    lineNumber: 69,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("th", {
@@ -43559,18 +43565,18 @@ function ShowQuestions() {
                                     children: "Action"
                                 }, void 0, false, {
                                     fileName: "frontend/app/home.jsx",
-                                    lineNumber: 63,
+                                    lineNumber: 70,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "frontend/app/home.jsx",
-                            lineNumber: 57,
+                            lineNumber: 64,
                             columnNumber: 22
                         }, this)
                     }, void 0, false, {
                         fileName: "frontend/app/home.jsx",
-                        lineNumber: 57,
+                        lineNumber: 64,
                         columnNumber: 15
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("tbody", {
@@ -43583,26 +43589,26 @@ function ShowQuestions() {
                                                 children: question.title
                                             }, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 70,
+                                                lineNumber: 77,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
                                                 children: question.body
                                             }, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 71,
+                                                lineNumber: 78,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {}, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 72,
+                                                lineNumber: 79,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
                                                 children: question.author
                                             }, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 73,
+                                                lineNumber: 80,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
@@ -43612,12 +43618,12 @@ function ShowQuestions() {
                                                     children: "Answer"
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 74,
+                                                    lineNumber: 81,
                                                     columnNumber: 103
                                                 }, this) : ""
                                             }, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 74,
+                                                lineNumber: 81,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
@@ -43627,18 +43633,18 @@ function ShowQuestions() {
                                                     children: "Delete"
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 75,
+                                                    lineNumber: 82,
                                                     columnNumber: 60
                                                 }, this) : ""
                                             }, void 0, false, {
                                                 fileName: "frontend/app/home.jsx",
-                                                lineNumber: 75,
+                                                lineNumber: 82,
                                                 columnNumber: 25
                                             }, this)
                                         ]
                                     }, index, true, {
                                         fileName: "frontend/app/home.jsx",
-                                        lineNumber: 69,
+                                        lineNumber: 76,
                                         columnNumber: 28
                                     }, this),
                                     question.reply.map((reply, index)=>{
@@ -43648,44 +43654,44 @@ function ShowQuestions() {
                                                     children: " - "
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 78,
+                                                    lineNumber: 85,
                                                     columnNumber: 34
                                                 }, this),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {}, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 78,
+                                                    lineNumber: 85,
                                                     columnNumber: 46
                                                 }, this),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
                                                     children: reply.body
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 78,
+                                                    lineNumber: 85,
                                                     columnNumber: 55
                                                 }, this),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
                                                     children: reply.author
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 79,
+                                                    lineNumber: 86,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {
                                                     children: reply.correct ? "Correct" : "Incorrect"
                                                 }, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 80,
+                                                    lineNumber: 87,
                                                     columnNumber: 25
                                                 }, this),
                                                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("td", {}, void 0, false, {
                                                     fileName: "frontend/app/home.jsx",
-                                                    lineNumber: 81,
+                                                    lineNumber: 88,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "frontend/app/home.jsx",
-                                            lineNumber: 78,
+                                            lineNumber: 85,
                                             columnNumber: 30
                                         }, this);
                                     })
@@ -43694,19 +43700,19 @@ function ShowQuestions() {
                         })
                     }, void 0, false, {
                         fileName: "frontend/app/home.jsx",
-                        lineNumber: 66,
+                        lineNumber: 73,
                         columnNumber: 15
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 56,
+                lineNumber: 63,
                 columnNumber: 15
             }, this) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h1", {
                 children: "Have no post"
             }, void 0, false, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 89,
+                lineNumber: 96,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -43716,7 +43722,7 @@ function ShowQuestions() {
                 ]
             }, void 0, true, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 91,
+                lineNumber: 98,
                 columnNumber: 15
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("input", {
@@ -43725,12 +43731,12 @@ function ShowQuestions() {
                 onChange: (e)=>setAmount(e.target.value)
             }, void 0, false, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 92,
+                lineNumber: 99,
                 columnNumber: 15
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 93,
+                lineNumber: 100,
                 columnNumber: 15
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -43738,20 +43744,20 @@ function ShowQuestions() {
                 children: "Buy Credits"
             }, void 0, false, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 94,
+                lineNumber: 101,
                 columnNumber: 15
             }, this),
             showNotification && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _notificationDefault.default), {
                 mesage: result
             }, void 0, false, {
                 fileName: "frontend/app/home.jsx",
-                lineNumber: 95,
+                lineNumber: 102,
                 columnNumber: 36
             }, this)
         ]
     }, void 0, true, {
         fileName: "frontend/app/home.jsx",
-        lineNumber: 54,
+        lineNumber: 61,
         columnNumber: 9
     }, this);
 }
