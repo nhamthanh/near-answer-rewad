@@ -43185,12 +43185,12 @@ var _answerDefault = parcelHelpers.interopDefault(_answer);
 // with /roster or /schedule. The / route will only match
 // when the pathname is exactly the string "/"
 const Main = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("main", {
-        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Switch), {
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Routes), {
             children: [
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
                     exact: true,
                     path: "/",
-                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _homeDefault.default), {}, void 0, false, void 0, void 0)
+                    element: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _homeDefault.default), {}, void 0, false, void 0, void 0)
                 }, void 0, false, {
                     fileName: "frontend/app/Main.jsx",
                     lineNumber: 17,
@@ -43198,7 +43198,7 @@ const Main = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("main", {
                 }, undefined),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
                     path: "/question",
-                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _questionDefault.default), {}, void 0, false, void 0, void 0)
+                    element: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _questionDefault.default), {}, void 0, false, void 0, void 0)
                 }, void 0, false, {
                     fileName: "frontend/app/Main.jsx",
                     lineNumber: 18,
@@ -43206,11 +43206,11 @@ const Main = ()=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("main", {
                 }, undefined),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
                     path: "/answer/:id",
-                    component: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _answerDefault.default), {}, void 0, false, void 0, void 0)
+                    element: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _answerDefault.default), {}, void 0, false, void 0, void 0)
                 }, void 0, false, {
                     fileName: "frontend/app/Main.jsx",
                     lineNumber: 19,
-                    columnNumber: 6
+                    columnNumber: 9
                 }, undefined)
             ]
         }, void 0, true, {
