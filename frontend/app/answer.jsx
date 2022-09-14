@@ -14,11 +14,13 @@ export default function Answer () {
   // after submitting the form, we want to show Notification
   const [showNotification, setShowNotification] = React.useState(false)
   let { id } = useParams();
+  
   React.useEffect(
     () => {
       // if(location.search) {
       //   window.location.assign('/');
       // }
+      console.log("aaaa");
       document.getElementById('addHyperLink').className = "";
       document.getElementById('homeHyperlink').className = "active";
       get_question(parseInt(id))
@@ -48,7 +50,7 @@ export default function Answer () {
       setShowNotification(true)
       response.open ? setResult('Sorry, your answer is incorrect') :  setResult('Your answer is correct and get rewarded') 
       setTimeout(() => {
-        window.location.assign('/');
+        window.location.assign(window.location.pathname);
       }, 1000)
     })
     .catch(function (error) {

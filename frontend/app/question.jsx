@@ -39,7 +39,7 @@ export default function AddQuestion () {
         // remove Notification again after css animation completes
         // this allows it to be shown again next time the form is submitted
         setTimeout(() => {
-          window.location.assign('/');
+          window.location.assign('#/');
         }, 1000)
         
       })

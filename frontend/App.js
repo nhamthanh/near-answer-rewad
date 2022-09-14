@@ -3,6 +3,8 @@ import React from 'react'
 import Signin from './app/login'
 import {get_owner, logout} from './assets/js/near/utils'
 import { Outlet } from "react-router-dom";
+import Main from './app/Main';
+import Header from './app/Header';
 
 export default function App() {
 
@@ -17,7 +19,7 @@ export default function App() {
       // use React Fragment, <>, to avoid wrapping elements in unnecessary divs
       <>
         Welcome <b>{window.accountId}</b> 
-        <nav>
+        {/* <nav>
           <ul class="nav nav-pills pull-right">
             <li role="presentation" id="homeHyperlink"><a href="/">Home</a></li>
             <li role="presentation" id="addHyperLink"><a href="/question">Add</a></li>
@@ -25,10 +27,9 @@ export default function App() {
               Sign out
             </button></li>
           </ul>
-        </nav>
-        <div className="content">
-          <Outlet />
-        </div>
+        </nav> */}
+        <Header/>
+          <Main />
       </>
     )
 }

@@ -1,4 +1,5 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME || 'nearcert.thanhnham.testnet'
+//const CONTRACT_NAME = process.env.CONTRACT_NAME || 'thanhnham.testnet'
+const CONTRACT_NAME = 'dev-1663174896267-35157863470827'
 function getConfig(env) {
   switch (env) {
 
