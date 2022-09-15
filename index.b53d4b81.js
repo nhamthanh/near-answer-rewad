@@ -42964,8 +42964,8 @@ module.exports = function() {
 };
 
 },{"u3":"dIyaj","./prepareStackTrace":"85RZD"}],"bZD2N":[function(require,module,exports) {
+//const CONTRACT_NAME = process.env.CONTRACT_NAME || 'thanhnham.testnet'
 const CONTRACT_NAME = "dev-1663174896267-35157863470827";
-//const CONTRACT_NAME = 'dev-1663171216425-33656056412150'
 function getConfig(env) {
     switch(env){
         case "production":
