@@ -1,6 +1,7 @@
 import {get_owner, get_questions, delete_question, get_credit, deposit, minus_credit} from '../assets/js/near/utils'
 import React from 'react'
 import Notification from './notification'
+import { Link } from 'react-router-dom'
 // class ShowQuestions extends React.Component {
 export default function ShowQuestions () {
     const [amount, setAmount] = React.useState('');
@@ -26,7 +27,7 @@ export default function ShowQuestions () {
     }, []);
 
     const answer = (id) => {
-      window.location.assign('/answer/'+id);
+      window.location.assign('#/answer/'+id);
     }
 
     const handleDeposit = () => {
@@ -44,8 +45,15 @@ export default function ShowQuestions () {
 
     const deleteQuestion = (id) => {
       if(window.confirm('Delete the item?')) {
-        delete_question(id);
-        window.location.reload();
+        console.log("id : " + id)
+        delete_question(id).then(function (response) {
+          console.log(response)
+          window.location.reload();
+        }).catch(function (error) {
+          console.log(error.kind.ExecutionError)
+          alert()
+        });
+        
       }
     }
     
@@ -92,7 +100,7 @@ export default function ShowQuestions () {
               <input placeholder="Credits (N)" value={amount} onChange={(e) => setAmount(e.target.value)} />
               <br />
               <button onClick={() => handleDeposit()}>Buy Credits</button>
-              {<Notification mesage={"result"}/>}
+              {showNotification && <Notification mesage={result}/>}
           </div>
     )
 }

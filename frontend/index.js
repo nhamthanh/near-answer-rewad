@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import App from './App'
 import { initContract } from './assets/js/near/utils'
 import AddQuestion from './app/question';
@@ -13,7 +13,7 @@ window.nearInitPromise = initContract()
   .then(() => {
     <App />
     root.render(
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
         <Route path="/" element={<App />}>
           <Route path="/question" element={<AddQuestion />} />
@@ -21,7 +21,7 @@ window.nearInitPromise = initContract()
           <Route path="/answer/:id" element={<Answer />} />
         </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     )
   })
   .catch(console.error)
