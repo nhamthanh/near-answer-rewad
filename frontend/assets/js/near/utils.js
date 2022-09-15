@@ -11,6 +11,14 @@ const nearConfig = getConfig('development')
 // 	}
 // } = nearAPI;
 
+// export const {
+// 	utils: {
+// 		format: {
+// 			formatNearAmount, parseNearAmount
+// 		}
+// 	}
+// } = nearAPI;
+
 // Initialize contract & set global variables
 export async function initContract() {
   // Initialize connection to the NEAR testnet
